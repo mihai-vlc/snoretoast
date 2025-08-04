@@ -21,7 +21,7 @@ jobs:
     - name: Prepare binary artifact
       run: |
         mkdir artifacts
-        copy build\Release\snoretoast.exe artifacts\snoretoast.exe
+        copy build\bin\Release\snoretoast.exe artifacts\snoretoast.exe
 
     - name: Upload binary to GitHub Release
       uses: softprops/action-gh-release@v2
