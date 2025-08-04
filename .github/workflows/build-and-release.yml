@@ -1,0 +1,31 @@
+name: Build Windows Binary and Attach to Release
+
+on:
+  release:
+    types: [published]  # Runs when a GitHub release is published
+
+jobs:
+  build-windows:
+    runs-on: windows-latest
+
+    steps:
+    - name: Checkout source
+      uses: actions/checkout@v3
+
+    - name: Configure CMake (MSVC)
+      run: cmake -S . -B build -DCMAKE_BUILD_TYPE=Release
+
+    - name: Build project (MSVC)
+      run: cmake --build build --config Release
+
+    - name: Prepare binary artifact
+      run: |
+        mkdir artifacts
+        copy build\Release\snoretoast.exe artifacts\snoretoast.exe
+
+    - name: Upload binary to GitHub Release
+      uses: softprops/action-gh-release@v2
+      with:
+        files: artifacts/snoretoast.exe
+      env:
+        GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
